@@ -1,0 +1,180 @@
+﻿@page
+@using static System.Net.WebRequestMethods
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Places App</h1>
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="col-3">Number of successful requests: </div>
+    <div class="col-4">
+        <span id="totalSuccessfulRequestsCounter"></span>
+    </div>
+</div>
+<br />
+<br />
+
+
+<div class="container">
+    <form method="post" id="ltlngform" name="ltlngform">
+        <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="@Model.latitude" class="form-control" id="latitude" asp-for="@Model.latitude" placeholder="example: 43.50891" required />
+            <span class="text-danger" asp-validation-for="@Model.latitude"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="@Model.longitude" class="form-control" id="longitude" asp-for="@Model.longitude" placeholder="example: 16.43915" required />
+            <span class="text-danger" asp-validation-for="@Model.longitude"></span>
+        </div>
+        <br />
+
+        <div class="mb-3">
+            <button class="btn btn-primary" type="submit" id="mybtn">Submit</button>
+        </div>
+
+    </form>
+
+    <br />
+    <br />
+    <br />
+    <br />
+
+</div>
+
+<br />
+
+
+<div class="container">
+
+
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+
+            <tr>
+                <th>NAME</th>
+                <th>RATING</th>
+                <th>VICINITY</th>
+                <th>TYPE TAGS</th>
+
+            </tr>
+        </thead>
+        @if (!Model.places.Any())
+        {
+
+        }
+
+        else
+        {
+            <tbody>
+
+                @foreach (var place in @Model.places)
+                {
+                    <tr>
+                        <td>@place.name</td>
+                        <td>@place.rating</td>
+                        <td>@place.vicinity</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Place Type Tags
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var item in @place.types)
+                                    {
+                                        <li><a href="#">@item</a></li>
+
+                                    }
+
+                                </ul>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+        }
+        <tfoot>
+            <tr>
+                <th>NAME</th>
+                <th>RATING</th>
+                <th>VICINITY</th>
+                <th>TYPE TAGS</th>
+
+            </tr>
+        </tfoot>
+    </table>
+
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/js/DataTablesJava.js"></script>
+    <script src="~/js/signalr.js"></script>
+    <script src="~/js/successfulRequest.js"></script>
+
+    
+    
+        @if (Model.p1 && Model.p2)
+        {
+        <script>
+        $(document).ready(function() {
+            newSuccessfulRequestOnClient();
+        });
+        </script>
+
+        }
+   
+        <script>
+        $(function(){
+            $('#mybtn').prop('disabled',true);
+            $('#latitude').keyup(function(){
+                if($(this).val() != ''){
+                    $('#mybtn').prop('disabled',false);
+                }
+                               });
+        })
+    </script>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
